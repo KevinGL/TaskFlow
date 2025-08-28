@@ -4,5 +4,10 @@
 
 {% block body %}
 
-AJOUTER UNE TÂCHE
+{{ form_start(form) }}
+{{ form_row(form.name) }}
+{{ form_row(form.description) }}
+{{ form_row(form.toDoBefore) }}
+{{ form_end(form) }}
+
 {% endblock %}

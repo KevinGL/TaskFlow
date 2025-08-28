@@ -26,6 +26,10 @@ class Task
     #[ORM\Column]
     private ?\DateTimeImmutable $toDoBefore = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +79,18 @@ class Task
     public function setToDoBefore(\DateTimeImmutable $toDoBefore): static
     {
         $this->toDoBefore = $toDoBefore;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
