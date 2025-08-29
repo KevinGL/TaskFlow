@@ -20,11 +20,11 @@ class Task
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    #[ORM\Column(type: "date")]
+    private ?\DateTime $createdAt = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $toDoBefore = null;
+    #[ORM\Column(type: "date")]
+    private ?\DateTime $toDoBefore = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
@@ -59,24 +59,24 @@ class Task
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTime $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getToDoBefore(): ?\DateTimeImmutable
+    public function getToDoBefore(): ?\DateTime
     {
         return $this->toDoBefore;
     }
 
-    public function setToDoBefore(\DateTimeImmutable $toDoBefore): static
+    public function setToDoBefore(\DateTime $toDoBefore): static
     {
         $this->toDoBefore = $toDoBefore;
 

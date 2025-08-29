@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue !{% endblock %}
+
+{% block body %}
+
+<a href={{ url("add_task") }}>Ajouter une tâche</a>
+
+<table>
+    <tr>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Date de création</th>
+        <th>À effectuer avant le</th>
+        <th>Personne affectée</th>
+    </tr>
+    {% for task in tasks %}
+        <tr>
+            <td>{{ task.name }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.createdAt | date("d/m/Y") }}</td>
+            <td>{{ task.toDoBefore | date("d/m/Y") }}</td>
+            <td>{{ task.user.username }}</td>
+            <td><a href={{ url("task_edit", { id: task.id }) }}>Modifier</a></td>
+            <td><a href={{ url("task_delete", { id: task.id }) }}>Supprimer</a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

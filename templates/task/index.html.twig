@@ -4,5 +4,14 @@
 
 {% block body %}
 
-LISTE TÂCHES
+{% if app.user and "ROLE_ADMIN" in app.user.getRoles() %}
+    <a href={{ url("read_tasks") }}>Gérer les tâches</a>
+{% endif %}
+
+<ul>
+    {% for task in tasks %}
+        <li>{{ task.name }}</li>
+    {% endfor %}
+</ul>
+
 {% endblock %}
