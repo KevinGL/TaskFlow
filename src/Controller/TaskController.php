@@ -120,4 +120,22 @@ final class TaskController extends AbstractController
         
         return $this->redirectToRoute("read_tasks");
     }
+
+    #[Route('/tasks/valid/{id}', name: 'valid_task')]
+    public function valid(TaskRepository $repo, EntityManagerInterface $em, int $id): Response
+    {
+        if(!$this->isGranted("ROLE_USER"))
+        {
+            return $this->redirectToRoute("app_login");
+        }
+
+        $task = $repo->find($id);
+
+        $task->setTreatedAt(new \DateTimeImmutable());
+
+        $em->persist($task);
+        $em->flush();
+        
+        return $this->redirectToRoute("tasks");
+    }
 }

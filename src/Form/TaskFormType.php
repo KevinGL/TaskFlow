@@ -20,6 +20,7 @@ class TaskFormType extends AbstractType
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
             ->add('toDoBefore', DateType::class)
+            ->add('treatedAt', DateType::class, ["required" => false])
             ->add('user', EntityType::class, ["class" => User::class, "choice_label" => "username"])
             ->add("Sauvegarder", SubmitType::class)
         ;

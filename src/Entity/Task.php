@@ -30,6 +30,9 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $treatedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,18 @@ class Task
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->treatedAt;
+    }
+
+    public function setTreatedAt(?\DateTimeImmutable $treatedAt): static
+    {
+        $this->treatedAt = $treatedAt;
 
         return $this;
     }

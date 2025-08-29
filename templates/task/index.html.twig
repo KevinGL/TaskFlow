@@ -10,7 +10,21 @@
 
 <ul>
     {% for task in tasks %}
-        <li>{{ task.name }}</li>
+        <li>
+            <div>
+                {{ task.name }} (À faire avant le {{ task.treatedAt | date("d/m/Y") }})
+            </div>
+            <div>
+                <p>
+                    {{ task.description }}
+                </p>
+            </div>
+            {% if task.treatedAt is null %}
+                <a href={{ url("valid_task", { id: task.id }) }}>Finaliser cette tâche</a>
+            {% else %}
+                Finalisée le {{ task.treatedAt | date("d/m/Y") }} à {{ task.treatedAt | date("h:m") }}
+            {% endif %}
+        </li>
     {% endfor %}
 </ul>
 

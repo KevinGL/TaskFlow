@@ -13,6 +13,7 @@
         <th>Date de création</th>
         <th>À effectuer avant le</th>
         <th>Personne affectée</th>
+        <th>Statut</th>
     </tr>
     {% for task in tasks %}
         <tr>
@@ -21,6 +22,13 @@
             <td>{{ task.createdAt | date("d/m/Y") }}</td>
             <td>{{ task.toDoBefore | date("d/m/Y") }}</td>
             <td>{{ task.user.username }}</td>
+            <td>
+                {% if task.treatedAt is null %}
+                    Non traitée
+                {% else %}
+                    Traitée le {{ task.treatedAt | date("d/m/Y") }} à {{ task.treatedAt | date("h:m") }}
+                {% endif %}
+            </td>
             <td><a href={{ url("task_edit", { id: task.id }) }}>Modifier</a></td>
             <td><a href={{ url("task_delete", { id: task.id }) }}>Supprimer</a></td>
         </tr>
