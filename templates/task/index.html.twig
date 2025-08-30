@@ -11,8 +11,8 @@
 <ul>
     {% for task in tasks %}
         <li>
-            <div>
-                {{ task.name }} (À faire avant le {{ task.treatedAt | date("d/m/Y") }})
+            <div class="{{ task.toDoBefore|date('U') < 'now'|date('U') ? 'text-red-600 font-bold' : 'text-black' }}">
+                {{ task.name }} (À faire avant le {{ task.toDoBefore | date("d/m/Y") }})
             </div>
             <div>
                 <p>
@@ -25,6 +25,7 @@
                 Finalisée le {{ task.treatedAt | date("d/m/Y") }} à {{ task.treatedAt | date("h:m") }}
             {% endif %}
         </li>
+        <br>
     {% endfor %}
 </ul>
 

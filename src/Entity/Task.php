@@ -30,8 +30,8 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $treatedAt = null;
+    #[ORM\Column(type:"datetime", nullable: true)]
+    private ?\DateTime $treatedAt = null;
 
     public function getId(): ?int
     {
@@ -98,12 +98,12 @@ class Task
         return $this;
     }
 
-    public function getTreatedAt(): ?\DateTimeImmutable
+    public function getTreatedAt(): ?\DateTime
     {
         return $this->treatedAt;
     }
 
-    public function setTreatedAt(?\DateTimeImmutable $treatedAt): static
+    public function setTreatedAt(?\DateTime $treatedAt): static
     {
         $this->treatedAt = $treatedAt;
 

@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Constraints\Date;
 
 final class TaskController extends AbstractController
 {
@@ -23,7 +22,7 @@ final class TaskController extends AbstractController
             return $this->redirectToRoute("app_login");
         }
 
-        $tasks = $repo->findByUser($this->getUser()->getId());
+        $tasks = $repo->findBy(['user' => $this->getUser()]);
         
         return $this->render('task/index.html.twig',
         [
@@ -131,7 +130,7 @@ final class TaskController extends AbstractController
 
         $task = $repo->find($id);
 
-        $task->setTreatedAt(new \DateTimeImmutable());
+        $task->setTreatedAt(new \DateTime());
 
         $em->persist($task);
         $em->flush();
