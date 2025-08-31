@@ -20,6 +20,8 @@
                 </p>
             </div>
             {% if task.treatedAt is null %}
+                <a href={{ url("treat_task", { id: task.id }) }}>Traiter cette tâche</a>
+            {% elseif task.treatedAt is not null and task.finalizedAt is null %}
                 <a href={{ url("valid_task", { id: task.id }) }}>Finaliser cette tâche</a>
             {% else %}
                 Finalisée le {{ task.treatedAt | date("d/m/Y") }} à {{ task.treatedAt | date("h:m") }}

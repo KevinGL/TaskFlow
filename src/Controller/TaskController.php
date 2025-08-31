@@ -31,18 +31,47 @@ final class TaskController extends AbstractController
     }
 
     #[Route('/tasks/read', name: 'read_tasks')]
-    public function read(TaskRepository $repo): Response
+    public function read(Request $req, TaskRepository $repo): Response
     {
         if(!$this->isGranted("ROLE_ADMIN"))
         {
             return $this->redirectToRoute("tasks");
         }
 
-        $tasks = $repo->findAll();
+        $tasks = [];
+        $page = 1;
+        $nbPages = 0;
+
+        if($req->query->get("page"))
+        {
+            $page = $req->query->get("page");
+        }
+
+        //dd($req->query);
+
+        if(!$req->query->get("filter"))
+        {
+            $tasks = $repo->findByPage($page, $nbPages);
+        }
+
+        else
+        if($req->query->get("filter") == "current")
+        {
+            $tasks = $repo->findCurrent($page, $nbPages);
+        }
+
+        else
+        if($req->query->get("filter") == "over")
+        {
+            $tasks = $repo->findOver($page, $nbPages);
+        }
         
         return $this->render('task/read.html.twig',
         [
-            "tasks" => $tasks
+            "tasks" => $tasks,
+            "nbPages" => $nbPages,
+            "filter" => $req->query->get("filter"),
+            "page" => $page
         ]);
     }
 
@@ -120,6 +149,24 @@ final class TaskController extends AbstractController
         return $this->redirectToRoute("read_tasks");
     }
 
+    #[Route('/tasks/treat/{id}', name: 'treat_task')]
+    public function treat(TaskRepository $repo, EntityManagerInterface $em, int $id): Response
+    {
+        if(!$this->isGranted("ROLE_USER"))
+        {
+            return $this->redirectToRoute("app_login");
+        }
+
+        $task = $repo->find($id);
+
+        $task->setTreatedAt(new \DateTime());
+
+        $em->persist($task);
+        $em->flush();
+        
+        return $this->redirectToRoute("tasks");
+    }
+
     #[Route('/tasks/valid/{id}', name: 'valid_task')]
     public function valid(TaskRepository $repo, EntityManagerInterface $em, int $id): Response
     {
@@ -130,7 +177,7 @@ final class TaskController extends AbstractController
 
         $task = $repo->find($id);
 
-        $task->setTreatedAt(new \DateTime());
+        $task->setFinalizedAt(new \DateTime());
 
         $em->persist($task);
         $em->flush();

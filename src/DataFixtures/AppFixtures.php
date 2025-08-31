@@ -66,6 +66,15 @@ class AppFixtures extends Fixture
                 $task->setTreatedAt(null);
             }
 
+            if($task->getTreatedAt() && rand() % 2)
+            {
+                $task->setFinalizedAt($this->faker->dateTimeBetween($task->getTreatedAt(), '+1 hour'));
+            }
+            else
+            {
+                $task->setFinalizedAt(null);
+            }
+
             $manager->persist($task);
         }
 

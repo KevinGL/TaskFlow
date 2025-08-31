@@ -33,6 +33,9 @@ class Task
     #[ORM\Column(type:"datetime", nullable: true)]
     private ?\DateTime $treatedAt = null;
 
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?\DateTime $finalizedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,6 +109,18 @@ class Task
     public function setTreatedAt(?\DateTime $treatedAt): static
     {
         $this->treatedAt = $treatedAt;
+
+        return $this;
+    }
+
+    public function getFinalizedAt(): ?\DateTime
+    {
+        return $this->finalizedAt;
+    }
+
+    public function setFinalizedAt(?\DateTime $finalizedAt): static
+    {
+        $this->finalizedAt = $finalizedAt;
 
         return $this;
     }

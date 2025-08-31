@@ -49,4 +49,63 @@ class TaskRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByPage($page, &$nbPages): array
+    {
+        $res = $this->createQueryBuilder('t')
+            ->setMaxResults(10)
+            ->setFirstResult(10 * ($page - 1))
+            ->getQuery()
+            ->getResult();
+        
+        $resNoPaginate = $this->createQueryBuilder('t')
+            ->getQuery()
+            ->getResult();
+        
+        $nbPages = count($resNoPaginate) / 10;
+        
+        return $res;
+    }
+
+    public function findCurrent($page, &$nbPages): array
+    {
+        $res = $this->createQueryBuilder('t')
+            ->where('t.treatedAt is not null')
+            ->andWhere('t.finalizedAt is null')
+            ->setMaxResults(10)
+            ->setFirstResult(10 * ($page - 1))
+            ->getQuery()
+            ->getResult();
+        
+        $resNoPaginate = $this->createQueryBuilder('t')
+            ->where('t.treatedAt is not null')
+            ->andWhere('t.finalizedAt is null')
+            ->getQuery()
+            ->getResult();
+        
+        $nbPages = count($resNoPaginate) / 10;
+
+        return $res;
+    }
+
+    public function findOver($page, &$nbPages): array
+    {
+        $res = $this->createQueryBuilder('t')
+            ->where('t.treatedAt is not null')
+            ->andWhere('t.finalizedAt is not null')
+            ->setMaxResults(10)
+            ->setFirstResult(10 * ($page - 1))
+            ->getQuery()
+            ->getResult();
+
+        $resNoPaginate = $this->createQueryBuilder('t')
+            ->where('t.treatedAt is not null')
+            ->andWhere('t.finalizedAt is not null')
+            ->getQuery()
+            ->getResult();
+        
+        $nbPages = count($resNoPaginate) / 10;
+
+        return $res;
+    }
 }
