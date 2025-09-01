@@ -21,7 +21,7 @@ class TaskFormType extends AbstractType
             ->add('description', TextareaType::class, ["label" => "Description"])
             ->add('toDoBefore', DateType::class, ["label" => "Date limite"])
             ->add('user', EntityType::class, ["class" => User::class, "choice_label" => "username", "label" => "Utilisateur associé"])
-            ->add("Sauvegarder", SubmitType::class)
+            ->add("Sauvegarder", SubmitType::class, ["attr" => ["class" => "w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition"]])
         ;
     }
 
