@@ -22,7 +22,7 @@ final class TaskController extends AbstractController
             return $this->redirectToRoute("app_login");
         }
 
-        $tasks = $repo->findBy(['user' => $this->getUser()]);
+        $tasks = $repo->findByUser($this->getUser());
         
         return $this->render('task/index.html.twig',
         [
@@ -46,8 +46,6 @@ final class TaskController extends AbstractController
         {
             $page = $req->query->get("page");
         }
-
-        //dd($req->query);
 
         if(!$req->query->get("filter"))
         {
@@ -105,6 +103,22 @@ final class TaskController extends AbstractController
         ]);
     }
 
+    #[Route('/tasks/view/{id}', name: 'task_view')]
+    public function view(Request $req, EntityManagerInterface $em, TaskRepository $repo, int $id): Response
+    {
+        if(!$this->isGranted("ROLE_USER"))
+        {
+            return $this->redirectToRoute("app_login");
+        }
+
+        $task = $repo->find($id);
+        
+        return $this->render('task/view.html.twig',
+        [
+            "task" => $task
+        ]);
+    }
+
     #[Route('/tasks/edit/{id}', name: 'task_edit')]
     public function edit(Request $req, EntityManagerInterface $em, TaskRepository $repo, int $id): Response
     {
@@ -122,6 +136,8 @@ final class TaskController extends AbstractController
         {
             $em->persist($task);
             $em->flush();
+
+            $this->addFlash("success", "La tâche a bien été mise à jour");
 
             return $this->redirectToRoute("read_tasks");
         }
@@ -145,6 +161,8 @@ final class TaskController extends AbstractController
 
         $em->remove($task);
         $em->flush();
+
+        $this->addFlash("success", "La tâche a bien été supprimée");
         
         return $this->redirectToRoute("read_tasks");
     }
@@ -181,6 +199,8 @@ final class TaskController extends AbstractController
 
         $em->persist($task);
         $em->flush();
+
+        $this->addFlash("success", "Bravo tâche terminée !");
         
         return $this->redirectToRoute("tasks");
     }

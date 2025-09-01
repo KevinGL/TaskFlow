@@ -46,6 +46,7 @@ class TaskRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->where('t.user = :user')
             ->setParameter('user', $user)
+            ->orderBy("t.createdAt", "DESC")
             ->getQuery()
             ->getResult();
     }

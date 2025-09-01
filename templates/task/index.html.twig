@@ -1,34 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue !{% endblock %}
+{% block title %}Vos tâches assignées{% endblock %}
 
 {% block body %}
 
-{% if app.user and "ROLE_ADMIN" in app.user.getRoles() %}
-    <a href={{ url("read_tasks") }}>Gérer les tâches</a>
-{% endif %}
-
-<ul>
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Vos tâches assignées</h1>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for task in tasks %}
-        <li>
-            <div class="{{ task.toDoBefore|date('U') < 'now'|date('U') ? 'text-red-600 font-bold' : 'text-black' }}">
-                {{ task.name }} (À faire avant le {{ task.toDoBefore | date("d/m/Y") }})
-            </div>
-            <div>
-                <p>
-                    {{ task.description }}
-                </p>
-            </div>
-            {% if task.treatedAt is null %}
-                <a href={{ url("treat_task", { id: task.id }) }}>Traiter cette tâche</a>
-            {% elseif task.treatedAt is not null and task.finalizedAt is null %}
-                <a href={{ url("valid_task", { id: task.id }) }}>Finaliser cette tâche</a>
-            {% else %}
-                Finalisée le {{ task.treatedAt | date("d/m/Y") }} à {{ task.treatedAt | date("h:m") }}
-            {% endif %}
-        </li>
-        <br>
+      <div class="bg-white shadow-lg rounded-xl p-4 flex flex-col justify-between">
+        <div>
+          <h2 class="text-lg font-bold text-gray-800 mb-2">{{ task.name }}</h2>
+          <p class="text-gray-600 mb-2">{{ task.description }}</p>
+          <p class="text-sm text-gray-500">
+            Assignée à : <span class="font-medium">{{ task.user.username }}</span>
+          </p>
+        </div>
+        <div class="mt-4 flex justify-between items-center">
+          {% if task.treatedAt %}
+            <span class="text-green-600 font-semibold text-sm">Traitée</span>
+          {% elseif task.treatedAt and task.finalizedAt is null %}
+            <span class="text-yellow-500 font-semibold text-sm">En cours</span>
+          {% endif %}
+          <span class="text-gray-400 text-sm">
+            À faire avant : {{ task.toDoBefore | date("d/m/Y") }}
+          </span>
+        </div>
+      </div>
     {% endfor %}
-</ul>
+  </div>
+</div>
 
 {% endblock %}

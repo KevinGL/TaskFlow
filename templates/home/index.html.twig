@@ -1,9 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue !{% endblock %}
+{% block title %}Bienvenue sur TaskFlow{% endblock %}
 
 {% block body %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 px-4">
+  <div class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md text-center">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Bienvenue sur TaskFlow</h1>
+    <p class="text-gray-600 mb-8">Gérez vos tâches facilement, où que vous soyez.</p>
 
-<div><a href={{ url("app_login") }}>"S'authentifier"</a></div>
-<div><a href={{ url("app_register") }}>"S'enregistrer"</a></div>
+    <div class="flex flex-col gap-4">
+      <a href="{{ url('app_login') }}" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition">
+        S'authentifier
+      </a>
+      <a href="{{ url('app_register') }}" class="w-full border border-gray-300 hover:border-gray-400 text-gray-700 font-semibold py-3 px-4 rounded-lg transition">
+        S'enregistrer
+      </a>
+    </div>
+  </div>
+</div>
 {% endblock %}

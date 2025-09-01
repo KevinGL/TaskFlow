@@ -24,16 +24,27 @@ class AppFixtures extends Fixture
     {
         $users = [];
         
-        $user = new User();
+        $admin = new User();
 
-        $user->setRoles(["ROLE_ADMIN"])
-        ->setPassword($this->hasher->getPasswordHasher($user)->hash("admin"))
-        ->setUsername("admin");
+        $admin->setRoles(["ROLE_ADMIN"])
+        ->setPassword($this->hasher->getPasswordHasher($admin)->hash("admin"))
+        ->setUsername("Kévin Gay");
 
-        $manager->persist($user);
-        array_push($users, $user);
+        $manager->persist($admin);
+        array_push($users, $admin);
 
-        for($i = 0 ; $i < 19 ; $i++)
+        ///////////////////////////////
+
+        $recruiter = new User();
+
+        $recruiter->setRoles(["ROLE_ADMIN"])
+        ->setPassword($this->hasher->getPasswordHasher($recruiter)->hash("recruteur"))
+        ->setUsername("Recruteur");
+
+        $manager->persist($recruiter);
+        array_push($users, $recruiter);
+
+        for($i = 0 ; $i < 18 ; $i++)
         {
             $user = new User();
             
@@ -51,7 +62,7 @@ class AppFixtures extends Fixture
         {
             $task = new Task();
 
-            $task->setName($this->faker->sentence())
+            $task->setName($this->faker->word())
             ->setDescription($this->faker->paragraph())
             ->setCreatedAt($this->faker->dateTimeBetween('-6 months', '-1 month'))
             ->setToDoBefore($this->faker->dateTimeBetween("-3 months", '+3 months'))

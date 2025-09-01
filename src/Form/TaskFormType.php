@@ -17,11 +17,10 @@ class TaskFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('toDoBefore', DateType::class)
-            ->add('treatedAt', DateType::class, ["required" => false])
-            ->add('user', EntityType::class, ["class" => User::class, "choice_label" => "username"])
+            ->add('name', TextType::class, ["label" => "Titre"])
+            ->add('description', TextareaType::class, ["label" => "Description"])
+            ->add('toDoBefore', DateType::class, ["label" => "Date limite"])
+            ->add('user', EntityType::class, ["class" => User::class, "choice_label" => "username", "label" => "Utilisateur associé"])
             ->add("Sauvegarder", SubmitType::class)
         ;
     }
