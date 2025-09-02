@@ -17,7 +17,8 @@ WORKDIR /var/www/html
 
 # Copier composer.json et composer.lock et installer les dépendances
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN php bin/console cache:clear
 
 # Copier le reste du code
 COPY . .
