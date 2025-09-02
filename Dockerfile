@@ -23,7 +23,7 @@ WORKDIR /home/symfonyuser/app
 COPY --chown=symfonyuser:symfonyuser . .
 
 # Installer les dépendances Symfony avec scripts activés
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Préparer les dossiers var et vendor
 RUN mkdir -p var/cache var/log var/sessions && chmod -R 777 var vendor
