@@ -4,8 +4,9 @@ FROM php:8.2-fpm-bullseye
 RUN apt-get update && apt-get install -y git unzip libzip-dev libonig-dev \
     && docker-php-ext-install pdo pdo_mysql mbstring zip
 
-# Installer Composer
+# Copier Composer depuis l'image officielle
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN chmod +x /usr/bin/composer
 
 WORKDIR /var/www/html
 
@@ -15,7 +16,7 @@ COPY . .
 # Installer dépendances Symfony avec scripts
 RUN composer install --no-dev --optimize-autoloader
 
-# Préparer var et vendor
+# Préparer dossiers var et vendor
 RUN mkdir -p var/cache var/log var/sessions && chmod -R 777 var vendor
 
 # Exposer le port
