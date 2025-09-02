@@ -1,21 +1,26 @@
-# Image PHP avec extensions nécessaires
 FROM php:8.2-cli
 
-# Installer extensions MySQL
-RUN docker-php-ext-install pdo pdo_mysql
+# Installer dépendances système
+RUN apt-get update && apt-get install -y \
+    unzip \
+    git \
+    libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql zip
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copier le projet
 WORKDIR /var/www/html
-COPY . .
 
-# Installer les dépendances Symfony
+# Copier composer files et installer dépendances
+COPY composer.json composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
 
-# Exposer le port que PHP va utiliser
+# Copier le reste du code
+COPY . .
+
+# Exposer le port PHP intégré
 EXPOSE 10000
 
-# Commande pour démarrer le serveur PHP intégré
+# Start command PHP intégré
 CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
