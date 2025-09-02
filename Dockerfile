@@ -1,26 +1,35 @@
+# Image PHP avec FPM
 FROM php:8.2-fpm-bullseye
 
-# Extensions PHP
-RUN apt-get update && apt-get install -y git unzip libzip-dev libonig-dev \
+# Installer dépendances système + extensions PHP nécessaires
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    libonig-dev \
+    libxml2-dev \
     && docker-php-ext-install pdo pdo_mysql mbstring zip
 
-# Copier Composer depuis l'image officielle
+# Copier Composer depuis l’image officielle
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN chmod +x /usr/bin/composer
 
-WORKDIR /var/www/html
+# Créer un utilisateur non-root pour Symfony
+RUN useradd -m symfonyuser
+USER symfonyuser
+WORKDIR /home/symfonyuser/app
 
 # Copier tout le projet
-COPY . .
+COPY --chown=symfonyuser:symfonyuser . .
 
-# Installer dépendances Symfony avec scripts
+# Installer les dépendances Symfony avec scripts activés
 RUN composer install --no-dev --optimize-autoloader
 
-# Préparer dossiers var et vendor
+# Préparer les dossiers var et vendor
 RUN mkdir -p var/cache var/log var/sessions && chmod -R 777 var vendor
 
-# Exposer le port
+# Exposer le port PHP intégré
 EXPOSE 10000
 
-# Démarrer PHP intégré
+# Lancer le serveur PHP intégré
 CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
