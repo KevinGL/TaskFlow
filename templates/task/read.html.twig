@@ -38,7 +38,7 @@
                         {% elseif task.treatedAt and task.finalizedAt is null %}
                             En cours
                         {% else %}                            
-                            Finalisée le {{ task.finalizedAt | date("d/m/Y") }} à {{ task.finalizedAt | date("h:m") }}
+                            Finalisée le {{ task.finalizedAt | date("d/m/Y") }} à {{ task.finalizedAt | date("h:i") }}
                         {% endif %}
                     </td>
                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
